@@ -16,7 +16,7 @@ For more information and related downloads for CodeSignTool, please visit <https
 The supported commands are:
 
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest --help
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest --help
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
@@ -39,7 +39,7 @@ Commands:
 It outputs the list of eSigner credential IDs associated with a particular user.
 
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest get_credential_ids --help
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest get_credential_ids --help
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
@@ -54,7 +54,7 @@ Returns list of credential IDs associated with the user
 ```
 ### Example:
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest get_credential_ids
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest get_credential_ids
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
@@ -67,7 +67,7 @@ Credential ID(s):
 It outputs the list of eSigner credential IDs associated with a particular user.
 
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest credential_info --help
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest credential_info --help
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
@@ -84,7 +84,7 @@ Returns signing credential information
 ```
 ### Example:
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest credential_info
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest credential_info
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
@@ -99,7 +99,7 @@ EVCS Certificate Subject Information:
 It signs and timestamps the code. In case only one valid credential ID is available, the sign option defaults to that without requiring the -credential_id option. In case there are multiple credential IDs for the same user, the sign command shows all the credential ids associated with the user. User can then choose which one to use. If totp secret is passed in command line, then it computes the OTP value internally otherwise asks the user to enter the OTP value.
 
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest sign --help
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest sign --help
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
@@ -130,7 +130,7 @@ Sign code
 ```
 ### Example:
 ```console
-$ docker run -it --rm --env-file .env ghcr.io/sslcom/ci-images:latest sign -input_file_path=/codesign/examples/codesign.ps1 -output_dir_path=/codesign/output
+$ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest sign -input_file_path=/codesign/examples/codesign.ps1 -output_dir_path=/codesign/output
 
 Run CodeSigner
 Running ESigner.com CodeSign Action
