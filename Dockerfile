@@ -1,4 +1,4 @@
-FROM openjdk:11.0.12-jdk-slim
+FROM eclipse-temurin:11.0.18_10-jdk-focal
 
 LABEL org.opencontainers.image.source https://github.com/sslcom/ci-images
 
