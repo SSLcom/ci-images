@@ -26,7 +26,7 @@ COMMAND="$COMMAND ${CMD[@]}"
 # Authentication Info
 if [[ ! "${CMD[@]}" =~ .*"--help".* ]]; then
   [ ! -z $USERNAME ] && COMMAND="$COMMAND -username=$USERNAME"
-  [ ! -z $PASSWORD ] && COMMAND="$COMMAND -password=$PASSWORD"
+  [ ! -z $PASSWORD ] && COMMAND="$COMMAND -password=\"$PASSWORD\""
 
   if [[ ! "${CMD[@]}" =~ .*"get_credential_ids".* ]]; then
       [ ! -z $CREDENTIAL_ID ] && COMMAND="${COMMAND} -credential_id=${CREDENTIAL_ID}"
