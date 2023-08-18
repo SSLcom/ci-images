@@ -10,6 +10,10 @@ For more information and related downloads for CodeSignTool, please visit <https
 
 </br>
 
+# Latest Image URLs
+Linux Image  : docker pull ghcr.io/sslcom/codesigner:latest</br>
+Windows Image: docker pull ghcr.io/sslcom/codesigner-win:latest
+
 # How to use this image
 
 ## Command options
@@ -128,7 +132,7 @@ Sign code
       -username=<username>   RA username
   -V, --version              Print version information and exit.
 ```
-### Example:
+### Linux Example:
 ```console
 $ docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner:latest sign -input_file_path=/codesign/examples/codesign.ps1 -output_dir_path=/codesign/output
 
@@ -136,6 +140,16 @@ Run CodeSigner
 Running ESigner.com CodeSign Action
 
 Code signed successfully: /codesign/output/codesign.ps1
+```
+
+### Windows Example:
+```powershell
+docker run -it --rm --env-file .env ghcr.io/sslcom/codesigner-win:latest sign ``-input_file_path="C:\CodeSignTool\examples\codesign.ps1" ``-output_dir_path="C:\CodeSignTool\Output"
+
+Run CodeSigner
+Running ESigner.com CodeSign Action
+
+Code signed successfully: C:\CodeSignTool\Output\codesign.ps1
 ```
 
 ## Environment Variables

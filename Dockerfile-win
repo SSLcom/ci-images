@@ -1,0 +1,28 @@
+FROM eclipse-temurin:11.0.18_10-jdk
+
+LABEL org.opencontainers.image.source=https://github.com/bayrakmustafa/ci-images
+
+ENV USERNAME=""
+ENV PASSWORD=""
+ENV CREDENTIAL_ID=""
+ENV TOTP_SECRET=""
+ENV CODE_SIGN_TOOL_PATH=C:\CodeSignTool
+ENV ENVIRONMENT_NAME=PROD
+
+# Add CodeSignTool
+RUN New-Item -ItemType Directory -Force -Path C:\Setup
+RUN Invoke-WebRequest -OutFile C:\Setup\CodeSignTool-v1.2.7.zip "https://www.ssl.com/download/codesigntool-for-windows"
+
+RUN Expand-Archive -LiteralPath C:\Setup\CodeSignTool-v1.2.7.zip -DestinationPath C:/ -Force
+RUN Move-Item -Destination "C:\CodeSignTool" -Path "C:\CodeSignTool-v1.2.7-windows"
+RUN New-Item -ItemType Directory -Force -Path C:\CodeSignTool
+
+COPY ./codesign-tool C:/CodeSignTool
+COPY ./entrypoint.ps1 C:/CodeSignTool/entrypoint.ps1
+COPY ./examples C:/CodeSignTool/Examples
+
+RUN New-Item -ItemType Directory -Force -Path C:\CodeSignTool\output
+
+WORKDIR C:/CodeSignTool
+
+ENTRYPOINT ["powershell", "C:\\CodeSignTool\\entrypoint.ps1"]

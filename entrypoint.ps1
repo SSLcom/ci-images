@@ -1,0 +1,51 @@
+Write-Host "Run CodeSigner"
+
+Write-Host "Running ESigner.com CodeSign Action"
+Write-Host ""
+
+$CODE_SIGN_TOOL_PATH="C:/CodeSignTool"
+$env:CODE_SIGN_TOOL_PATH = "C:/CodeSignTool"
+
+# Exec the specified command or fall back on bash
+if ($args.Length -eq 0) {
+    $CMD = "powershell"
+} else {
+    $CMD = $args
+}
+
+if ($ENVIRONMENT_NAME -ne "PROD") {
+    Copy-Item -Path "C:/CodeSignTool/conf/code_sign_tool.properties" -Destination "C:/CodeSignTool/conf/code_sign_tool.properties.production" -Force
+    Copy-Item -Path "C:/CodeSignTool/conf/code_sign_tool_demo.properties" -Destination "C:/CodeSignTool/conf/code_sign_tool.properties" -Force
+}
+
+$COMMAND = "C:/CodeSignTool/CodeSignTool.bat"
+
+# CMD Args
+$COMMAND = "$COMMAND $($CMD -join ' ')"
+
+# Authentication Info
+if ($CMD -notcontains "--help") {
+    if ($env:USERNAME) { $COMMAND = "$COMMAND -username=$env:USERNAME" }
+    if ($env:PASSWORD) { $COMMAND = "$COMMAND -password=$env:PASSWORD" }
+
+    if ($CMD -notcontains "get_credential_ids") {
+        if ($env:CREDENTIAL_ID) { $COMMAND = "$COMMAND -credential_id=$env:CREDENTIAL_ID" }
+        if ($CMD -notcontains "credential_info") {
+            if ($env:TOTP_SECRET) { $COMMAND = "$COMMAND -totp_secret=$env:TOTP_SECRET" }
+            if ($env:PROGRAM_NAME) { $COMMAND = "$COMMAND -program_name=$env:PROGRAM_NAME" }
+            if ($env:FILE_PATH) { $COMMAND = "$COMMAND -input_file_path=$env:FILE_PATH" }
+            if ($env:OUTPUT_PATH) { $COMMAND = "$COMMAND -output_dir_path=$env:OUTPUT_PATH" }
+        }
+    }
+}
+
+$RESULT = & Invoke-Expression $COMMAND | Out-String
+if ($RESULT -match "Error" -OR $RESULT -match "Exception" -OR $RESULT -match "Missing required option" -OR $RESULT -match "Unmatched arguments from") {
+    Write-Host "Something Went Wrong. Please try again."
+    Write-Host "$RESULT"
+    exit 1
+} else {
+    Write-Host "$RESULT"
+}
+
+exit 0
