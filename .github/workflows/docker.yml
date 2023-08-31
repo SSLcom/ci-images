@@ -6,6 +6,7 @@ env:
   DOCKER_TAG: latest
   LINUX_DOCKER_IMAGE_NAME: ghcr.io/sslcom/codesigner:latest
   WINDOWS_DOCKER_IMAGE_NAME: ghcr.io/sslcom/codesigner-win:latest
+  WINDOWS_2019_DOCKER_IMAGE_NAME: ghcr.io/sslcom/codesigner-win2019:latest
 
 jobs:
   build-linux:
@@ -44,8 +45,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-  build-windows:
-    runs-on: windows-latest
+  build-windows-2022:
+    runs-on: windows-2022
     permissions:
       contents: read
       packages: write
@@ -65,7 +66,34 @@ jobs:
           tags: ${{ env.DOCKER_TAG }}
           registry: ghcr.io
           multiPlatform: false
-          dockerfile: Dockerfile-win
+          dockerfile: Dockerfile-ltsc2022
+          platform: windows/amd64
+          overrideDriver: true
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+  build-windows-2019:
+    runs-on: windows-2019
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Docker Image Name
+        run: |
+          echo "DOCKER_TAG=${{ github.ref_name }}" >> $GITHUB_ENV
+        if: startsWith(github.ref, 'refs/tags/')
+
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & Push Docker image (Windows)
+        with:
+          image: codesigner-win2019
+          tags: ${{ env.DOCKER_TAG }}
+          registry: ghcr.io
+          multiPlatform: false
+          dockerfile: Dockerfile-ltsc2019
           platform: windows/amd64
           overrideDriver: true
           username: ${{ github.actor }}
@@ -110,9 +138,9 @@ jobs:
           name: codesign.ps1
           path: ./artifacts/codesign.ps1
 
-  test-windows:
-    runs-on: windows-latest
-    needs: [build-windows]
+  test-windows-2022:
+    runs-on: windows-2022
+    needs: [build-windows-2022]
     permissions:
       contents: read
       packages: write
@@ -144,6 +172,47 @@ jobs:
         shell: powershell
         run: |
           docker run -i --rm --volume .\artifacts:C:\CodeSignTool\output --env-file .env ${{ env.WINDOWS_DOCKER_IMAGE_NAME }} sign ``-input_file_path=C:\CodeSignTool\examples\codesign.ps1 ``-output_dir_path=C:\CodeSignTool\output
+
+      - name: Upload Signed Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: codesign-win.ps1
+          path: ./artifacts/codesign.ps1
+
+  test-windows-2019:
+    runs-on: windows-2019
+    needs: [build-windows-2019]
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up Docker Image Name
+        run: |
+          echo "WINDOWS_2019_DOCKER_IMAGE_NAME=ghcr.io/sslcom/codesigner-win2019:${{ github.ref_name }}" >> $GITHUB_ENV
+        if: startsWith(github.ref, 'refs/tags/')
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Docker image to Github package registry
+        run: docker pull ${{ env.WINDOWS_2019_DOCKER_IMAGE_NAME }}
+
+      - name: Create Artifacts Directory
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path .\artifacts
+
+      - name: Sign Example PS1 File
+        shell: powershell
+        run: |
+          docker run -i --rm --volume .\artifacts:C:\CodeSignTool\output --env-file .env ${{ env.WINDOWS_2019_DOCKER_IMAGE_NAME }} sign ``-input_file_path=C:\CodeSignTool\examples\codesign.ps1 ``-output_dir_path=C:\CodeSignTool\output
 
       - name: Upload Signed Files
         uses: actions/upload-artifact@v3
