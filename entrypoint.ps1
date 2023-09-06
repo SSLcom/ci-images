@@ -45,6 +45,10 @@ if ($RESULT -match "Error" -OR $RESULT -match "Exception" -OR $RESULT -match "Mi
     Write-Host "$RESULT"
     exit 1
 } else {
+    if ($CMD -contains "sign")
+    {
+        Write-Host "$USERNAME signed code using ${CREDENTIAL_ID} credential id"
+    }
     Write-Host "$RESULT"
 }
 

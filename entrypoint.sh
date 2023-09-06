@@ -45,6 +45,9 @@ if [[ "$RESULT" =~ .*"Error".* || "$RESULT" =~ .*"Exception".* || "$RESULT" =~ .
   echo "$RESULT"
   exit 1
 else
+  if [[ "${CMD[@]}" =~ .*"sign".* ]]; then
+    echo "$USERNAME signed code using ${CREDENTIAL_ID} credential id"
+  fi
   echo "$RESULT"
 fi
 
