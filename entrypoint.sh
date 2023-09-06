@@ -46,7 +46,9 @@ if [[ "$RESULT" =~ .*"Error".* || "$RESULT" =~ .*"Exception".* || "$RESULT" =~ .
   exit 1
 else
   if [[ "${CMD[@]}" =~ .*"sign".* ]]; then
-    echo "$USERNAME signed code using ${CREDENTIAL_ID} credential id"
+    LOG_USERNAME=$(echo $USERNAME | sed "s/\"//g")
+    LOG_CREDENTIAL_ID=$(echo $CREDENTIAL_ID | sed "s/\"//g")
+    echo "Code signed successfully by ${LOG_USERNAME} using ${LOG_CREDENTIAL_ID} credential id"
   fi
   echo "$RESULT"
 fi

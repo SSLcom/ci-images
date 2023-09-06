@@ -47,7 +47,9 @@ if ($RESULT -match "Error" -OR $RESULT -match "Exception" -OR $RESULT -match "Mi
 } else {
     if ($CMD -contains "sign")
     {
-        Write-Host "$USERNAME signed code using ${CREDENTIAL_ID} credential id"
+        $LOG_USERNAME = $USERNAME -replace '"',''''
+        $LOG_CREDENTIAL_ID = $CREDENTIAL_ID -replace '"',''''
+        Write-Host "Code signed successfully by ${LOG_USERNAME} using ${LOG_CREDENTIAL_ID} credential id"
     }
     Write-Host "$RESULT"
 }
