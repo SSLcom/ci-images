@@ -46,11 +46,10 @@ CMD ["jshell"]
 
 # Add CodeSignTool
 RUN New-Item -ItemType Directory -Force -Path C:\Setup
-RUN Invoke-WebRequest -OutFile C:\Setup\CodeSignTool-v1.2.7.zip "https://www.ssl.com/download/codesigntool-for-windows"
+RUN Invoke-WebRequest -OutFile C:\Setup\CodeSignTool-v1.3.0.zip "https://www.ssl.com/download/codesigntool-for-windows"
 
-RUN Expand-Archive -LiteralPath C:\Setup\CodeSignTool-v1.2.7.zip -DestinationPath C:/ -Force
-RUN Move-Item -Destination "C:\CodeSignTool" -Path "C:\CodeSignTool-v1.2.7-windows"
 RUN New-Item -ItemType Directory -Force -Path C:\CodeSignTool
+RUN Expand-Archive -LiteralPath C:\Setup\CodeSignTool-v1.3.0.zip -DestinationPath C:/CodeSignTool -Force
 
 COPY ./codesign-tool C:/CodeSignTool
 COPY ./entrypoint.ps1 C:/CodeSignTool/entrypoint.ps1
