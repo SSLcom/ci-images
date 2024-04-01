@@ -40,7 +40,7 @@ if [[ ! "${CMD[@]}" =~ .*"--help".* ]]; then
 fi
 
 RESULT=$(bash -c "set -e; $COMMAND")
-if [[ "$RESULT" =~ .*"Error".* || "$RESULT" =~ .*"Exception".* || "$RESULT" =~ .*"Missing required option".* || $RESULT =~ .*"Unmatched arguments from".* || $RESULT =~ .*"Unmatched argument".* ]]; then
+if [[ "$RESULT" =~ .*"Error".* || "$RESULT" =~ .*"Exception".* || "$RESULT" =~ .*"Missing required option".* || $RESULT =~ .*"Unmatched arguments from".* || $RESULT =~ .*"Unmatched argument".* || $RESULT =~ .*"Not a valid output directory".* ]]; then
   echo "Something Went Wrong. Please try again."
   echo "$RESULT"
   exit 1
