@@ -25,16 +25,16 @@ COMMAND="$COMMAND ${CMD[@]}"
 
 # Authentication Info
 if [[ ! "${CMD[@]}" =~ .*"--help".* ]]; then
-  [ ! -z $USERNAME ] && COMMAND="$COMMAND -username=$USERNAME"
+  [ ! -z $USERNAME ] && COMMAND="$COMMAND -username=\"$USERNAME\""
   [ ! -z $PASSWORD ] && COMMAND="$COMMAND -password=\"$PASSWORD\""
 
   if [[ ! "${CMD[@]}" =~ .*"get_credential_ids".* ]]; then
-      [ ! -z $CREDENTIAL_ID ] && COMMAND="${COMMAND} -credential_id=${CREDENTIAL_ID}"
+      [ ! -z $CREDENTIAL_ID ] && COMMAND="${COMMAND} -credential_id=\"${CREDENTIAL_ID}\""
       if [[ ! "${CMD[@]}" =~ .*"credential_info".* ]]; then
-        [ ! -z $TOTP_SECRET ]  && COMMAND="${COMMAND} -totp_secret=${TOTP_SECRET}"
-        [ ! -z $PROGRAM_NAME ] && COMMAND="${COMMAND} -program_name=${PROGRAM_NAME}"
-        [ ! -z $FILE_PATH ]    && COMMAND="${COMMAND} -input_file_path=${FILE_PATH}"
-        [ ! -z $OUTPUT_PATH ]  && COMMAND="${COMMAND} -output_dir_path=${OUTPUT_PATH}"
+        [ ! -z $TOTP_SECRET ]  && COMMAND="${COMMAND} -totp_secret=\"${TOTP_SECRET}\""
+        [ ! -z $PROGRAM_NAME ] && COMMAND="${COMMAND} -program_name=\"${PROGRAM_NAME}\""
+        [ ! -z $FILE_PATH ]    && COMMAND="${COMMAND} -input_file_path=\"${FILE_PATH}\""
+        [ ! -z $OUTPUT_PATH ]  && COMMAND="${COMMAND} -output_dir_path=\"${OUTPUT_PATH}\""
       fi
   fi
 fi
