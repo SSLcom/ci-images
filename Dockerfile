@@ -13,7 +13,7 @@ ENV ENVIRONMENT_NAME=PROD
 RUN apt update && apt install -y unzip vim wget curl
 
 # Add CodeSignTool
-ADD --chown=root:root https://github.com/SSLcom/CodeSignTool/releases/download/v1.3.0/CodeSignTool-v1.3.0.zip /tmp/CodeSignTool-v1.3.0.zip
+ADD --chown=root:root "https://github.com/SSLcom/CodeSignTool/releases/download/v1.3.0/CodeSignTool-v1.3.0.zip" "/tmp/CodeSignTool-v1.3.0.zip"
 
 RUN mkdir -p "/codesign" && unzip "/tmp/CodeSignTool-v1.3.0.zip" -d "/codesign" && \
     chmod +x "/codesign/CodeSignTool.sh" && ln -s "/codesign/CodeSignTool.sh" "/usr/bin/codesign"
