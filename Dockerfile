@@ -1,6 +1,6 @@
 FROM eclipse-temurin:11.0.18_10-jdk-jammy
 
-LABEL org.opencontainers.image.source=https://github.com/bayrakmustafa/ci-images
+LABEL org.opencontainers.image.source=https://github.com/SSLcom/ci-images
 
 ENV USERNAME=""
 ENV PASSWORD=""

@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-LABEL org.opencontainers.image.source=https://github.com/bayrakmustafa/ci-images
+LABEL org.opencontainers.image.source=https://github.com/SSLcom/ci-images
 
 ENV USERNAME=""
 ENV PASSWORD=""
