@@ -10,7 +10,7 @@ if ($args.Length -eq 0) {
     $CMD = $args
 }
 
-$CURRENT_ENV = "PRODUCTION"
+$CURRENT_ENV = "Production"
 $ENVIRONMENT_NAME = $env:ENVIRONMENT_NAME.Replace('"', "")
 if ($ENVIRONMENT_NAME -ne "PROD") {
     Copy-Item -Path "C:/CodeSignTool/conf/code_sign_tool.properties" -Destination "C:/CodeSignTool/conf/code_sign_tool.properties.production" -Force
