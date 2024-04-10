@@ -1,8 +1,5 @@
 Write-Host "Run CodeSigner"
 
-Write-Host "Running ESigner.com CodeSign Action"
-Write-Host ""
-
 $CODE_SIGN_TOOL_PATH="C:/CodeSignTool"
 $env:CODE_SIGN_TOOL_PATH = "C:/CodeSignTool"
 
@@ -13,10 +10,15 @@ if ($args.Length -eq 0) {
     $CMD = $args
 }
 
+$CURRENT_ENV = "PRODUCTION"
+$ENVIRONMENT_NAME = $env:ENVIRONMENT_NAME.Replace('"', "")
 if ($ENVIRONMENT_NAME -ne "PROD") {
     Copy-Item -Path "C:/CodeSignTool/conf/code_sign_tool.properties" -Destination "C:/CodeSignTool/conf/code_sign_tool.properties.production" -Force
     Copy-Item -Path "C:/CodeSignTool/conf/code_sign_tool_demo.properties" -Destination "C:/CodeSignTool/conf/code_sign_tool.properties" -Force
+    $CURRENT_ENV = "Sandbox"
 }
+Write-Host "Running ESigner.com CodeSign Action on $CURRENT_ENV"
+Write-Host ""
 
 $COMMAND = "C:/CodeSignTool/CodeSignTool.bat"
 

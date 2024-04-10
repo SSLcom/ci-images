@@ -3,14 +3,16 @@ set -e
 
 echo "Run CodeSigner"
 
-echo "Running ESigner.com CodeSign Action"
-echo ""
-
+CURRENT_ENV="PRODUCTION"
 ENVIRONMENT_NAME=$(echo "$ENVIRONMENT_NAME" | tr -d '"')
 if [[ $ENVIRONMENT_NAME != "PROD" ]]; then
     cp /codesign/conf/code_sign_tool.properties /codesign/conf/code_sign_tool.properties.production
-    cp /codesign/conf/code_sign_tool_demo.properties /codesign/conf/code_sign_tool.properties 
+    cp /codesign/conf/code_sign_tool_demo.properties /codesign/conf/code_sign_tool.properties
+    CURRENT_ENV="SANDBOX"
 fi
+
+echo "Running ESigner.com CodeSign Action on $CURRENT_ENV"
+echo ""
 
 # Exec the specified command or fall back on bash
 if [ $# -eq 0 ]; then
