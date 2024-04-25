@@ -20,10 +20,16 @@ if ($ENVIRONMENT_NAME -ne "PROD") {
 Write-Host "Running ESigner.com CodeSign Action on $CURRENT_ENV"
 Write-Host ""
 
-$COMMAND = "C:/CodeSignTool/CodeSignTool.bat"
+$COMMAND = "C:/CodeSignTool/jdk-11.0.2/bin/java -jar C:/CodeSignTool/jar/code_sign_tool-1.3.0.jar"
 
 # CMD Args
-$COMMAND = "$COMMAND $($CMD -join ' ')"
+$numOfArgs = $args.Length
+for ($i=0; $i -lt $numOfArgs; $i++)
+{
+    $PARAM = $($args[$i])
+    $PARAM = $PARAM.Replace(" ", "`` ").Replace('(', "``(").Replace(')', "``)")
+    $COMMAND = "$COMMAND $($PARAM -join ' ')"
+}
 
 # Authentication Info
 if ($CMD -notcontains "--help") {
@@ -41,6 +47,7 @@ if ($CMD -notcontains "--help") {
     }
 }
 
+Write-Output "Running Command: $COMMAND"
 $RESULT = & Invoke-Expression $COMMAND | Out-String
 if ($RESULT -match "Error" -OR $RESULT -match "Exception" -OR $RESULT -match "Missing required option" -OR $RESULT -match "Unmatched arguments from" -OR $RESULT -match "Unmatched argument" -OR $RESULT -match "Not a valid output directory") {
     Write-Host "Something Went Wrong. Please try again."
@@ -49,8 +56,8 @@ if ($RESULT -match "Error" -OR $RESULT -match "Exception" -OR $RESULT -match "Mi
 } else {
     if ($CMD -contains "sign")
     {
-        $LOG_USERNAME = $USERNAME.Replace('"', "")
-        $LOG_CREDENTIAL_ID = $CREDENTIAL_ID.Replace('"', "")
+        $LOG_USERNAME = $env:USERNAME.Replace('"', "")
+        $LOG_CREDENTIAL_ID = $env:CREDENTIAL_ID.Replace('"', "")
         Write-Host "Code signed successfully by ${LOG_USERNAME} using ${LOG_CREDENTIAL_ID} credential id"
     }
     Write-Host "$RESULT"
