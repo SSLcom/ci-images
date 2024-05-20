@@ -28,8 +28,8 @@ COMMAND="$COMMAND ${CMD[@]}"
 
 # Authentication Info
 if [[ ! "${CMD[@]}" =~ .*"--help".* ]]; then
-  [ ! -z $USERNAME ] && COMMAND="$COMMAND -username=$(echo $USERNAME | awk '{gsub( /[(`$)]/, "\\\\&"); print $0}')"
-  [ ! -z $PASSWORD ] && COMMAND="$COMMAND -password=$(echo $PASSWORD | awk '{gsub( /[(`$)]/, "\\\\&"); print $0}')"
+  [ ! -z "$USERNAME" ] && COMMAND="$COMMAND -username=$(echo $USERNAME | awk '{gsub( /[(`$)]/, "\\\\&"); print $0}')"
+  [ ! -z "$PASSWORD" ] && COMMAND="$COMMAND -password=$(echo $PASSWORD | awk '{gsub( /[(`$)]/, "\\\\&"); print $0}')"
 
   if [[ ! "${CMD[@]}" =~ .*"get_credential_ids".* ]]; then
       [ ! -z $CREDENTIAL_ID ] && COMMAND="${COMMAND} -credential_id=${CREDENTIAL_ID}"
