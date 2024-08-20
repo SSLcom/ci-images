@@ -9,6 +9,7 @@ ENV TOTP_SECRET=""
 ENV CODE_SIGN_TOOL_PATH=C:\CodeSignTool
 ENV ENVIRONMENT_NAME=PROD
 ENV JAVA_VERSION jdk-11.0.20.1+1
+ENV JVM_OPTS="-Xms512m -Xmx2048m"
 
 # $ProgressPreference: https://github.com/PowerShell/PowerShell/issues/2138#issuecomment-251261324
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -46,10 +47,10 @@ CMD ["jshell"]
 
 # Add CodeSignTool
 RUN New-Item -ItemType Directory -Force -Path C:\Setup
-RUN Invoke-WebRequest -OutFile C:\Setup\CodeSignTool-v1.3.0.zip "https://github.com/SSLcom/CodeSignTool/releases/download/v1.3.0/CodeSignTool-v1.3.0-windows.zip"
+RUN Invoke-WebRequest -OutFile C:\Setup\CodeSignTool-v1.3.1.zip "https://github.com/SSLcom/CodeSignTool/releases/download/v1.3.1/CodeSignTool-v1.3.1-windows.zip"
 
 RUN New-Item -ItemType Directory -Force -Path C:\CodeSignTool
-RUN Expand-Archive -LiteralPath C:\Setup\CodeSignTool-v1.3.0.zip -DestinationPath C:/CodeSignTool -Force
+RUN Expand-Archive -LiteralPath C:\Setup\CodeSignTool-v1.3.1.zip -DestinationPath C:/CodeSignTool -Force
 
 COPY ./codesign-tool C:/CodeSignTool
 COPY ./entrypoint.ps1 C:/CodeSignTool/entrypoint.ps1

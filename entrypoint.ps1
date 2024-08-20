@@ -17,10 +17,10 @@ if ($ENVIRONMENT_NAME -ne "PROD") {
     Copy-Item -Path "C:/CodeSignTool/conf/code_sign_tool_demo.properties" -Destination "C:/CodeSignTool/conf/code_sign_tool.properties" -Force
     $CURRENT_ENV = "Sandbox"
 }
-Write-Host "Running ESigner.com CodeSign Action on $CURRENT_ENV"
+Write-Host "Running ESigner.com CodeSign Action on $CURRENT_ENV [$env:JVM_OPTS]"
 Write-Host ""
 
-$COMMAND = "C:/CodeSignTool/jdk-11.0.2/bin/java -jar C:/CodeSignTool/jar/code_sign_tool-1.3.0.jar"
+$COMMAND = "C:/CodeSignTool/jdk-11.0.2/bin/java $env:JVM_OPTS -jar C:/CodeSignTool/jar/code_sign_tool-1.3.1.jar"
 
 # CMD Args
 $numOfArgs = $args.Length

@@ -4,6 +4,7 @@ set -e
 echo "Run CodeSigner"
 
 CURRENT_ENV="Production"
+JVM_OPTS=$(echo "$JVM_OPTS" | tr -d '"')
 ENVIRONMENT_NAME=$(echo "$ENVIRONMENT_NAME" | tr -d '"')
 if [[ $ENVIRONMENT_NAME != "PROD" ]]; then
     cp /codesign/conf/code_sign_tool.properties /codesign/conf/code_sign_tool.properties.production
@@ -11,7 +12,7 @@ if [[ $ENVIRONMENT_NAME != "PROD" ]]; then
     CURRENT_ENV="Sandbox"
 fi
 
-echo "Running ESigner.com CodeSign Action on $CURRENT_ENV"
+echo "Running ESigner.com CodeSign Action on $CURRENT_ENV [$JVM_OPTS]"
 echo ""
 
 # Exec the specified command or fall back on bash
@@ -21,7 +22,7 @@ else
     CMD=( "$@" )
 fi
 
-COMMAND="/usr/bin/codesign"
+COMMAND="java ${JVM_OPTS} -jar ${CODE_SIGN_TOOL_PATH}/jar/code_sign_tool-1.3.1.jar"
 
 # CMD Args
 COMMAND="$COMMAND ${CMD[@]}"

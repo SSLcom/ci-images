@@ -183,3 +183,7 @@ OAuth TOTP Secret. You can access detailed information on https://www.ssl.com/ho
 ### `ENVIRONMENT_NAME`
 
 These variables are optional, and specify the environment name. If omitted, the environment name will be set to `PROD` and use production code_sign_tool.properties file. For signing artifact with demo account, the environment name will be set to `TEST`.
+
+### `JVM_OPTS`
+
+These variables are optional, and specify the JVM options. If omitted, the JVM options will be set to `-Xms512m -Xmx2048m`.
